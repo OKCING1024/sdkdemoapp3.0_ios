@@ -79,7 +79,7 @@
         _systemNotificationTip.numberOfLines = 0;
         _systemNotificationTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
         _systemNotificationTip.font = [UIFont systemFontOfSize:11];
-        _systemNotificationTip.text = NSLocalizedString(@"setting.push.anotherTip", @"Enable or disable Push Notifications via “Settings”->”Notifications” on your iPhone.");
+        _systemNotificationTip.text = NSLocalizedString(@"setting.push.anotherTip", @"Enable/Disable Notifications via “Settings”->”Notifications” on the device.");
     }
     return _systemNotificationTip;
 }
@@ -179,7 +179,6 @@
             cell.textLabel.text = NSLocalizedString(@"setting.push.systemPush", @"Notification");
             BOOL enableNotification = [self isAllowedNotification];
             cell.detailTextLabel.text = enableNotification ? NSLocalizedString(@"setting.push.enable", @"Enabled") : NSLocalizedString(@"setting.push.disable", @"Disabled");
-            
         }
     } else {
         
@@ -188,8 +187,6 @@
             cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display preview text");
             self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
             [cell.contentView addSubview:self.displaySwitch];
-
-
         } else if (indexPath.row == 1) {
             
             cell.textLabel.text = NSLocalizedString(@"setting.push.nodisturb", @"Do not disturb");
@@ -209,7 +206,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (indexPath.section == 1 && indexPath.row == 2) {
+    
+    if (indexPath.section == 0 && indexPath.row == 0) {
+        [self openSettings];
+    }
+    else if (indexPath.section == 1 && indexPath.row == 2) {
         
         EMPushDisplaynameViewController *display = [[EMPushDisplaynameViewController alloc] init];
         display.title = NSLocalizedString(@"setting.push.display", @"Display preview text");
@@ -223,14 +224,20 @@
     }
 }
 
+- (void)openSettings
+{
+    NSURL *settings = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+    if ([[UIApplication sharedApplication] canOpenURL:settings])
+    {
+        [[UIApplication sharedApplication] openURL:settings];
+    }
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        
         return [self footerWithTip:self.systemNotificationTip];
     } else {
-        
         return [self footerWithTip:self.displayNameTip];
     }
 }
@@ -239,10 +246,8 @@
 {
     CGRect rect = CGRectZero;
     if (section == 0) {
-        
         rect = [self frameFromLabel:self.systemNotificationTip];
     } else {
-        
         rect = [self frameFromLabel:self.displayNameTip];
     }
     return rect.size.height + 20;

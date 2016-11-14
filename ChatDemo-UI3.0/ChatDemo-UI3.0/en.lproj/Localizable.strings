@@ -97,7 +97,7 @@
 "setting.push.displayname" = "Push notification display name";
 "setting.push.tip" = "The display name will appear in notification center.";
 "setting.push.systemPush" = "Notification";
-"setting.push.anotherTip" = "Enable or disable Push Notifications via “Settings”->”Notifications” on your iPhone.";
+"setting.push.anotherTip" = "Enable/Disable Notifications via “Settings”->”Notifications” on the device.";
 "setting.push.changeStyleFailed" = "Modify push displayStyle failed";
 "setting.push.changeDisturbFailed" = "Modify noDisturb status failed";
 
