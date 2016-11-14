@@ -79,7 +79,7 @@
         _systemNotificationTip.numberOfLines = 0;
         _systemNotificationTip.textColor = RGBACOLOR(112, 126, 137, 1.0);
         _systemNotificationTip.font = [UIFont systemFontOfSize:11];
-        _systemNotificationTip.text = NSLocalizedString(@"setting.push.anotherTip", @"Enable or disable Hyphenate Notifications via “Settings”->”Notifications” on your iPhone.");
+        _systemNotificationTip.text = NSLocalizedString(@"setting.push.anotherTip", @"Enable or disable Push Notifications via “Settings”->”Notifications” on your iPhone.");
     }
     return _systemNotificationTip;
 }
