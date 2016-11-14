@@ -27,5 +27,7 @@
 #import "MBProgressHUD.h"
 #import "NSObject+EMAlertView.h"
 #import <AVFoundation/AVFoundation.h>
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 #endif

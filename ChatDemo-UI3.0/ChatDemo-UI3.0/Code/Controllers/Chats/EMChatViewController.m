@@ -87,6 +87,21 @@
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
     }
     
+    [self setupViewLayout];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSMutableArray *unreadMessages = [NSMutableArray array];
+    for (EMMessageModel *model in self.dataSource) {
+        if ([self _shouldSendHasReadAckForMessage:model.message read:NO]) {
+            [unreadMessages addObject:model.message];
+        }
+    }
+    if ([unreadMessages count]) {
+        [self _sendHasReadResponseForMessages:unreadMessages isRead:YES];
+    }
+    [_conversation markAllMessagesAsRead:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(removeGroupsNotification:)
                                                  name:KEM_REMOVEGROUP_NOTIFICATION
@@ -106,13 +121,22 @@
                                                   object:nil];
 }
 
+- (void)setupViewLayout
+{
+    self.tableView.width = KScreenWidth;
+    self.tableView.height = KScreenHeight - self.chatToolBar.height - 64;
+    
+    self.chatToolBar.width = KScreenWidth;
+    self.chatToolBar.top = KScreenHeight - self.chatToolBar.height - 64;
+}
+
 #pragma mark - getter
 
 - (UIButton*)backButton
 {
     if (_backButton == nil) {
         _backButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _backButton.frame = CGRectMake(0, 0, 44, 44);
+        _backButton.frame = CGRectMake(0, 0, 8, 15);
         [_backButton addTarget:self action:@selector(backAction) forControlEvents:UIControlEventTouchUpInside];
         [_backButton setImage:[UIImage imageNamed:@"Icon_Back"] forState:UIControlStateNormal];
     }
@@ -124,7 +148,7 @@
     if (_camButton == nil) {
         _camButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _camButton.frame = CGRectMake(0, 0, 20, 12);
-        [_camButton setImage:[UIImage imageNamed:@"IconVideo"] forState:UIControlStateNormal];
+        [_camButton setImage:[UIImage imageNamed:@"iconVideo"] forState:UIControlStateNormal];
         [_camButton addTarget:self action:@selector(makeVideoCall) forControlEvents:UIControlEventTouchUpInside];
     }
     return _camButton;
@@ -134,8 +158,8 @@
 {
     if (_photoButton == nil) {
         _photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _photoButton.frame = CGRectMake(0, 0, 20, 12);
-        [_photoButton setImage:[UIImage imageNamed:@"IconCall"] forState:UIControlStateNormal];
+        _photoButton.frame = CGRectMake(0, 0, 20, 15);
+        [_photoButton setImage:[UIImage imageNamed:@"iconCall"] forState:UIControlStateNormal];
         [_photoButton addTarget:self action:@selector(makeAudioCall) forControlEvents:UIControlEventTouchUpInside];
     }
     return _photoButton;
@@ -146,6 +170,7 @@
     if (_detailButton == nil) {
         _detailButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _detailButton.frame = CGRectMake(0, 0, 44, 44);
+        [_detailButton setImage:[UIImage imageNamed:@"icon_info"] forState:UIControlStateNormal];
         [_detailButton addTarget:self action:@selector(enterDetailView) forControlEvents:UIControlEventTouchUpInside];
     }
     return _detailButton;
@@ -387,7 +412,12 @@
         [self _sendHasReadResponseForMessages:@[model.message] isRead:YES];
     }
     EMImageMessageBody *body = (EMImageMessageBody*)model.message.body;
-    [[EMMessageReadManager shareInstance] showBrowserWithImages:@[[NSURL URLWithString:body.remotePath]]];
+    if (model.message.direction == EMMessageDirectionSend && body.localPath.length > 0) {
+        UIImage *image = [UIImage imageWithContentsOfFile:body.localPath];
+        [[EMMessageReadManager shareInstance] showBrowserWithImages:@[image]];
+    } else {
+        [[EMMessageReadManager shareInstance] showBrowserWithImages:@[[NSURL URLWithString:body.remotePath]]];
+    }
 }
 
 - (void)didAudioCellPressed:(EMMessageModel *)model

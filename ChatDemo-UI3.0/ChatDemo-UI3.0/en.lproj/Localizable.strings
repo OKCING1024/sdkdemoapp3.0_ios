@@ -36,6 +36,9 @@
 "login.failure" = "Login failure";
 "login.failure.password.notmatch" = "Password does not match username";
 "login.ok" = "Ok";
+"login.inputNameAndPswd" = "Please enter username and password";
+"login.endAutoLogin.failure" = "Automatic logon failure";
+"login.endAutoLogin.succeed" = "Automatic logon succeed";
 
 //chat
 "chat.not.delivered" = "Not Delivered";
@@ -53,6 +56,7 @@
 "chat.copy" = "Copy";
 "chat.cancel" = "Cancel";
 "chat.placeHolder" = "Send Message";
+"chat.send" = "Send";
 
 //call
 "call.calling" = "Calling";
@@ -200,8 +204,12 @@
 "message.friendapply.agree" = "%@ agreed to add friends to apply";
 "message.friendapply.refuse" = "%@ refuse to add friends to apply";
 "message.inputGroupSubject" = "Please input a group theme";
+"message.receiveMessage" = "you have a new message";
 
 //apns
 "apns.failToRegisterApns" = "Fail to register apns";
 "apns.failToBindDeviceToken" = "Fail to bind device token";
 "apns.content" = "Apns content";
+
+//network
+"network.disconnection" = "Network disconnection";

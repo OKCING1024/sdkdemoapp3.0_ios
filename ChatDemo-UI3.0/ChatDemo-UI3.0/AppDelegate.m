@@ -18,7 +18,7 @@
 #import <Crashlytics/Crashlytics.h>
 #import "AppDelegate+Parse.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <EMClientDelegate>
 
 @end
 
@@ -71,6 +71,7 @@
     [self.window makeKeyAndVisible];
     
     [self _registerRemoteNotification];
+    [self registerNotifications];
     
     // Fabric
     [Fabric with:@[[Crashlytics class]]];
@@ -85,6 +86,7 @@
 
         EMMainViewController *main = [[EMMainViewController alloc] init];
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:main];
+        navigationController.interactivePopGestureRecognizer.delegate = (id)self;
         self.window.rootViewController = navigationController;
         [EMChatDemoHelper shareHelper].mainVC = main;
         
@@ -117,12 +119,22 @@
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
+
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
+    if ([EMChatDemoHelper shareHelper].mainVC) {
+        [[EMChatDemoHelper shareHelper].mainVC didReceiveLocalNotification:notification];
+    }
 }
 
 #pragma mark - App Delegate
@@ -182,5 +194,23 @@
 #endif
 }
 
+-(void)registerNotifications{
+    [self unregisterNotifications];
+    [[EMClient sharedClient] addDelegate:self delegateQueue:nil];
+}
+
+-(void)unregisterNotifications{
+    [[EMClient sharedClient] removeDelegate:self];
+}
+
+
+#pragma mark - EMClientDelegate
+
+- (void)autoLoginDidCompleteWithError:(EMError *)aError
+{
+    NSString *alertMsg = aError == nil ? NSLocalizedString(@"login.endAutoLogin.succeed", @"Automatic logon succeed") : NSLocalizedString(@"login.endAutoLogin.failure", @"Automatic logon failure");
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:alertMsg delegate:nil cancelButtonTitle:NSLocalizedString(@"login.ok", @"Ok") otherButtonTitles:nil, nil];
+    [alert show];
+}
 
 @end

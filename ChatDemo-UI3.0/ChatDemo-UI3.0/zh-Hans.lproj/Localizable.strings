@@ -36,6 +36,9 @@
 "login.failure" = "登陆失败";
 "login.failure.password.notmatch" = "密码与账号不匹配";
 "login.ok" = "确认";
+"login.inputNameAndPswd" = "请输入账号和密码";
+"login.endAutoLogin.failure" = "自动登录失败";
+"login.endAutoLogin.succeed" = "自动登录成功";
 
 //chat
 "chat.not.delivered" = "未送达";
@@ -53,6 +56,7 @@
 "chat.copy" = "复制";
 "chat.cancel" = "取消";
 "chat.placeHolder" = "发送消息";
+"chat.send" = "发送";
 
 //call
 
@@ -205,8 +209,12 @@
 "message.friendapply.agree" = "%@同意了加好友申请";
 "message.friendapply.refuse" = "%@拒绝了加好友申请";
 "message.inputGroupSubject" = "请输入群组主题";
+"message.receiveMessage" = "您有一条新消息";
 
 //apns
 "apns.failToRegisterApns" = "注册推送失败";
 "apns.failToBindDeviceToken" = "消息推送与设备绑定失败";
 "apns.content" = "推送内容";
+
+//network
+"network.disconnection" = "当前网络连接失败";
