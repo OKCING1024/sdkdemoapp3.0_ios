@@ -184,7 +184,7 @@
         
         if (indexPath.row == 0) {
             
-            cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display preview text");
+            cell.textLabel.text = NSLocalizedString(@"setting.push.display", @"Display preview details");
             self.displaySwitch.frame = CGRectMake(self.tableView.frame.size.width - 65, 8, 50, 30);
             [cell.contentView addSubview:self.displaySwitch];
         } else if (indexPath.row == 1) {
@@ -213,7 +213,7 @@
     else if (indexPath.section == 1 && indexPath.row == 2) {
         
         EMPushDisplaynameViewController *display = [[EMPushDisplaynameViewController alloc] init];
-        display.title = NSLocalizedString(@"setting.push.display", @"Display preview text");
+        display.title = NSLocalizedString(@"setting.push.display", @"Display preview details");
         display.currentDisplayName = _pushNickname;
         [display getUpdatedDisplayName:^(NSString *newDisplayName) {
             

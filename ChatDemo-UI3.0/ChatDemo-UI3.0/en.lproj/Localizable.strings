@@ -90,7 +90,7 @@
 
 //setting.push
 "setting.push.getFailed" = "Get push status failed";
-"setting.push.display" = "Display preview text";
+"setting.push.display" = "Display preview details";
 "setting.push.nodisturb" = "Do not disturb";
 "setting.push.enable" = "Enabled";
 "setting.push.disable" = "Disabled";
