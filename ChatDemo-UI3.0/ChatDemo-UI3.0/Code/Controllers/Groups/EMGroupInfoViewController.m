@@ -89,7 +89,7 @@
 }
 
 - (void)updateMemberCountDescription {
-    _memberCountLabel.text = [NSString stringWithFormat:@"%@: %ld/%d",NSLocalizedString(@"group.participants", @"Participants"),_occupants.count,2000];
+    _memberCountLabel.text = [NSString stringWithFormat:@"%@: %ld/%d",NSLocalizedString(@"group.participants", @"Participants"),(unsigned long)_occupants.count,2000];
 }
 
 #pragma mark - Data Update Method
@@ -144,6 +144,13 @@
     BOOL isOwner = [self isGroupOwner];
     
     EMGroupPermissionModel *model = [[EMGroupPermissionModel alloc] init];
+    model.title = NSLocalizedString(@"group.id",@"Group ID");
+    model.isEdit = NO;
+    model.permissionDescription = self.currentGroup.groupId;
+    model.type = EMGroupPermissionType_groupId;
+    [sectionData1 addObject:model];
+    
+    model = [[EMGroupPermissionModel alloc] init];
     model.title = isOwner ? NSLocalizedString(@"group.isPublic", @"Appear in group search") : NSLocalizedString(@"group.groupType", @"Group Type");
     model.isEdit = NO;
     model.permissionDescription = isPublic ? NSLocalizedString(@"group.public", @"Public") : NSLocalizedString(@"group.private", @"Private");
@@ -158,7 +165,7 @@
         model.permissionDescription = _currentGroup.setting.style == EMGroupStylePrivateMemberCanInvite ? NSLocalizedString(@"group.enabled", @"Enabled") : NSLocalizedString(@"group.disabled", @"Disabled");
     }
     else {
-        model.title = NSLocalizedString(@"group.mute", @"Mute");
+        model.title = NSLocalizedString(@"group.block", @"Block");
         model.isEdit = YES;
         model.type = EMGroupPermissionType_mute;
         model.switchState = _currentGroup.isBlocked;
@@ -214,7 +221,6 @@
             }
             else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:NO];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REMOVEGROUP_NOTIFICATION object:nil];
             }
         }];
@@ -227,7 +233,6 @@
             }
             else{
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REFRESH_GROUPLIST_NOTIFICATION object:nil];
-                [weakSelf.navigationController popViewControllerAnimated:NO];
                 [[NSNotificationCenter defaultCenter] postNotificationName:KEM_REMOVEGROUP_NOTIFICATION object:nil];
             }
         }];
@@ -413,8 +418,8 @@
 }
 
 #pragma mark - EMGroupManagerDelegate
-- (void)didReceiveAcceptedGroupInvitation:(EMGroup *)aGroup
-                                  invitee:(NSString *)aInvitee
+- (void)groupInvitationDidApprove:(EMGroup *)aGroup
+                          invitee:(NSString *)aInvitee
 {
     if ([aGroup.groupId isEqualToString:_currentGroup.groupId]) {
         [self fetchGroupInfo];

@@ -23,6 +23,7 @@
 #import "EMConversationModel.h"
 #import "EMMessageModel.h"
 #import "EMNotificationNames.h"
+#import "EMUserProfileManager.h"
 
 @interface EMChatViewController () <EMChatToolBarDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,EMLocationViewDelegate,EMChatManagerDelegate,EMChatBaseCellDelegate,UIActionSheetDelegate>
 
@@ -78,7 +79,7 @@
     if (_conversation.type == EMConversationTypeChat) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
         self.navigationItem.rightBarButtonItems = @[[[UIBarButtonItem alloc] initWithCustomView:self.photoButton],[[UIBarButtonItem alloc] initWithCustomView:self.camButton]];
-         self.title = self.conversation.conversationId;
+         self.title = [[EMUserProfileManager sharedInstance] getNickNameWithUsername:_conversation.conversationId];
     } else if (_conversation.type == EMConversationTypeGroupChat){
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.backButton];
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.detailButton];
@@ -132,6 +133,11 @@
 
 #pragma mark - getter
 
+- (NSString*)conversationId
+{
+    return _conversation.conversationId;
+}
+
 - (UIButton*)backButton
 {
     if (_backButton == nil) {
@@ -147,7 +153,7 @@
 {
     if (_camButton == nil) {
         _camButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _camButton.frame = CGRectMake(0, 0, 20, 12);
+        _camButton.frame = CGRectMake(0, 0, 25, 12);
         [_camButton setImage:[UIImage imageNamed:@"iconVideo"] forState:UIControlStateNormal];
         [_camButton addTarget:self action:@selector(makeVideoCall) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -158,7 +164,7 @@
 {
     if (_photoButton == nil) {
         _photoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _photoButton.frame = CGRectMake(0, 0, 20, 15);
+        _photoButton.frame = CGRectMake(0, 0, 25, 15);
         [_photoButton setImage:[UIImage imageNamed:@"iconCall"] forState:UIControlStateNormal];
         [_photoButton addTarget:self action:@selector(makeAudioCall) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -208,6 +214,7 @@
 #pragma mark - Notification Method
 
 - (void)removeGroupsNotification:(NSNotification *)notification {
+    [self.navigationController popToViewController:self animated:NO];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
