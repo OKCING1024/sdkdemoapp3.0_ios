@@ -42,7 +42,7 @@
     EMOptions *options = [EMOptions optionsWithAppkey:@"hyphenatedemo#hyphenatedemo"];
     NSString *apnsCertName = nil;
 
-    // aws
+    // Hyphenate cert keys
     #if DEBUG
         apnsCertName = @"DevelopmentCertificate";
     #else
