@@ -39,22 +39,15 @@
     [self parseApplication:application didFinishLaunchingWithOptions:launchOptions];
     
     // init HyphenateSDK
-    //hyphenatedemo#hyphenatedemo
-    //easemob-demo#chatdemoui
     EMOptions *options = [EMOptions optionsWithAppkey:@"hyphenatedemo#hyphenatedemo"];
     NSString *apnsCertName = nil;
-//#if DEBUG
-//    apnsCertName = @"chatdemoui_dev";
-//#else
-//    apnsCertName = @"chatdemoui";
-//#endif
 
-//aws
-#if DEBUG
-    apnsCertName = @"DevelopmentCertificate";
-#else
-    apnsCertName = @"ProductionCertificate";
-#endif
+    // aws
+    #if DEBUG
+        apnsCertName = @"DevelopmentCertificate";
+    #else
+        apnsCertName = @"ProductionCertificate";
+    #endif
     
     [options setApnsCertName:apnsCertName];
     [options setEnableConsoleLog:YES];
