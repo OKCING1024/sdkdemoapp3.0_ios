@@ -26,7 +26,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 2;
 }
 
 
@@ -44,10 +44,6 @@
     } else if (indexPath.row == 1) {
         
         cell.textLabel.text = NSLocalizedString(@"setting.about.sdkversion", @"SDK Version");
-        cell.detailTextLabel.text = [[EMClient sharedClient] version];
-    } else {
-        
-        cell.textLabel.text = NSLocalizedString(@"setting.about.uiversion", @"EaseUI Library Version");
         cell.detailTextLabel.text = [[EMClient sharedClient] version];
     }
     
